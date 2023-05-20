@@ -1,0 +1,25 @@
+version: "3" #Phiên bản 3 của docker-compose
+services:
+  nginx:
+    # ports:
+    #   - "3000:80"
+  node-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: development #Pass biến đến
+    volumes:
+      - ./:/app #link data ở host machine với của node-app
+      - /app/node_modules #Tạo một volume riêng trong docker ngẫu nhiên 
+                          #và link
+    environment:  #Những biến môi trường trong node-app
+      - NODE_ENV=development
+      - MONGO_USER=sanjeev
+      - MONGO_PASSWORD=mypassword
+      - SESSION_SECRET=secret
+
+    command: npm run dev # chạy command sau khi chạy xong node-app
+  mongo:
+    environment:  #Những biến môi trường trong mongo
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example

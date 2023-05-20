@@ -1,0 +1,31 @@
+version: "3" #Phiên bản 3 của docker-compose
+services:
+  nginx: # Tạo container nginx
+    image: nginx:stable-alpine #pull phiên bản stable-alphine
+    ports:
+      - "3000:80" # Khi có resquest đến host machine ở port 3000 sẽ được forward qua port 80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro # Tạo volume link giữa nginx config
+                                                               #  trong host machine và container.
+
+  node-app:  # Tạo container node-app
+    build: . #chạy dựa vào Dockerfile tại folder hiện tại
+    # image: sloppynetworks/node-app 
+    environment: #Những biến môi trường 
+      - PORT=3000 
+    depends_on: #Cần tạo container khác trước khi tạo contain node-app
+      - 
+      
+  mongo: # Tạo container mongo
+    image: mongo #pull mongo
+    environment:  #Những biến môi trường cho mongo
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes: #link database trong mongo với mongo-db
+      - mongo-db:/data/db
+
+  redis: # Tạo container redis
+    image: redis #pull redis
+
+volumes: #tạo volumes riêng với tên 
+  mongo-db:
