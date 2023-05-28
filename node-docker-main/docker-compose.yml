@@ -14,7 +14,7 @@ services:
     environment: #Những biến môi trường 
       - PORT=3000 
     depends_on: #Cần tạo container khác trước khi tạo contain node-app
-      - 
+      - mongo
       
   mongo: # Tạo container mongo
     image: mongo #pull mongo
